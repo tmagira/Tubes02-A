@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,9 +11,31 @@
         android:text="Game\nOver"
         android:textAlignment="center"
         android:textSize="70sp"
-        android:layout_above="@id/linear_layout"
+        android:layout_above="@id/score"
         android:layout_centerHorizontal="true"
-        android:layout_margin="50sp"/>
+        android:layout_margin="40sp"/>
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Score :"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_above="@id/tv_score"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="score"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/linear_layout"
+        android:layout_margin="20sp"/>
+
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -25,7 +48,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Game"
+            android:text="Play Again"
             android:layout_margin="10sp"/>
 
         <Button
