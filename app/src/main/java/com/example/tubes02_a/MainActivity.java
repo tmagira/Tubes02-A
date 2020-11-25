@@ -1,16 +1,40 @@
 package com.example.tubes02_a;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentListener{
+
+    private MainMenuFragment mainMenuFragment;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //testing commit
-        // cobain branch magira
+
+        this.fragmentManager = this.getSupportFragmentManager();
+        this.mainMenuFragment = MainMenuFragment.newInstance();
+
+        changePage(1);
+    }
+
+    @Override
+    public void changePage(int page) {
+        this.ft = this.fragmentManager.beginTransaction();
+
+        if (page == 1) {
+            ft.replace(R.id.fragment_container, this.mainMenuFragment).addToBackStack(null);
+        }
+        this.ft.commit();
+    }
+
+    @Override
+    public void closeApplication() {
+
     }
 }
