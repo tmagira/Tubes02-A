@@ -24,8 +24,10 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_menu_fragment,container, false);
 
+        //Initiate Variables
         this.btnPlay = view.findViewById(R.id.btn_play);
 
+        //Listeners
         this.btnPlay.setOnClickListener(this);
         return view;
     }

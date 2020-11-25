@@ -9,7 +9,9 @@ import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -21,13 +23,14 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class GameFragment extends Fragment {
+public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener {
     private FragmentManager fragmentManager;
     private FragmentListener listener;
 
     Bitmap mBitmap;
     ImageView ivCanvas;
     Canvas mCanvas;
+    GestureDetector gestureDetector;
     boolean canvasInitiated = false;
 
     public GameFragment(){}
@@ -37,9 +40,14 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.game_fragment,container, false);
 
+        //Canvas
         this.ivCanvas = view.findViewById(R.id.iv_canvas);
-
+        this.ivCanvas.setOnTouchListener(this);
         initiateCanvas();
+
+        //Gesture Detector
+        this.gestureDetector = new GestureDetector(getContext(),this);
+
         return view;
     }
 
@@ -66,9 +74,7 @@ public class GameFragment extends Fragment {
 
         //Create BitMap
         this.mBitmap = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
-
         this.ivCanvas.setImageBitmap(mBitmap);
-
         this.mCanvas = new Canvas(mBitmap);
 
         int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.teal_200, null);
@@ -77,5 +83,45 @@ public class GameFragment extends Fragment {
         this.canvasInitiated = true;
         this.ivCanvas.invalidate();
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return this.gestureDetector.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Log.d("gesture", "onDown: onDown");
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+            Log.d("gesture", "onDown: onShowPress");
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Log.d("gesture", "onDown: onSingleTapUp");
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Log.d("gesture", "onDown: on_scroll");
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Log.d("gesture", "onDown: onLongPress");
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.d("gesture", "onDown: on_fling");
+        return false;
+    }
+
 
 }

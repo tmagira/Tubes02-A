@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Initiate Variables
         this.fragmentManager = this.getSupportFragmentManager();
         this.mainMenuFragment = MainMenuFragment.newInstance();
         this.gameFragment = GameFragment.newInstance();
