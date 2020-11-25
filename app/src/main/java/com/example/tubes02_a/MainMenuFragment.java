@@ -12,10 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class MainMenuFragment extends Fragment {
+public class MainMenuFragment extends Fragment implements View.OnClickListener{
     private FragmentManager fragmentManager;
     private FragmentListener listener;
-    private Button btnCari;
+    private Button btnPlay;
 
     public MainMenuFragment(){}
 
@@ -24,6 +24,9 @@ public class MainMenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_menu_fragment,container, false);
 
+        this.btnPlay = view.findViewById(R.id.btn_play);
+
+        this.btnPlay.setOnClickListener(this);
         return view;
     }
 
@@ -43,4 +46,10 @@ public class MainMenuFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v==this.btnPlay){
+            this.listener.changePage(2);
+        }
+    }
 }
