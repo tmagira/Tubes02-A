@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
     private FragmentManager fragmentManager;
     private GameFragment gameFragment;
     private FragmentTransaction ft;
-
+//caca ubah ini
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
