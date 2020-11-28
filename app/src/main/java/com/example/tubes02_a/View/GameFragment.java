@@ -1,27 +1,24 @@
-package com.example.tubes02_a;
+package com.example.tubes02_a.View;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.example.tubes02_a.R;
 
 public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener {
     private FragmentManager fragmentManager;
