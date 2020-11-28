@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
         this.fragmentManager = this.getSupportFragmentManager();
         this.mainMenuFragment = MainMenuFragment.newInstance();
         this.gameFragment = GameFragment.newInstance();
-
+        //test//
         changePage(1);
     }
 
