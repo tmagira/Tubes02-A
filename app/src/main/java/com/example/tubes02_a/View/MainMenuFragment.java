@@ -10,8 +10,14 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+<<<<<<< Updated upstream:app/src/main/java/com/example/tubes02_a/View/MainMenuFragment.java
 import com.example.tubes02_a.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+=======
+public class MainMenuFragment extends Fragment implements View.OnClickListener{
+    private FragmentListener listener;
+    private Button btnPlay;
+>>>>>>> Stashed changes:app/src/main/java/com/example/tubes02_a/MainMenuFragment.java
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
