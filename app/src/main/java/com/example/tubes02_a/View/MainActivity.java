@@ -11,8 +11,8 @@ import com.example.tubes02_a.R;
 public class MainActivity extends AppCompatActivity implements FragmentListener{
 
     private MainMenuFragment mainMenuFragment;
-    private FragmentManager fragmentManager;
     private GameFragment gameFragment;
+    private FragmentManager fragmentManager;
     private FragmentTransaction ft;
 //caca ubah ini
     @Override

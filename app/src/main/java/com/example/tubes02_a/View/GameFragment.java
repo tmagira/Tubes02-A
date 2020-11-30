@@ -21,7 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.tubes02_a.R;
 
 public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener {
-    private FragmentManager fragmentManager;
+
     private FragmentListener listener;
 
     Bitmap mBitmap;
