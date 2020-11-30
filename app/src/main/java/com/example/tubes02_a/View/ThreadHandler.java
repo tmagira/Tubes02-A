@@ -4,6 +4,8 @@ import android.graphics.PointF;
 import android.os.Handler;
 import android.os.Message;
 
+import com.example.tubes02_a.MainActivity;
+
 public class ThreadHandler extends Handler {
     protected MainActivity mainActivity;
     protected final static int DRAW_RECT = 1;
