@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -20,7 +21,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.tubes02_a.R;
 
-public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener {
+public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener, View.OnClickListener{
 
     private FragmentListener listener;
 
@@ -29,7 +30,7 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     Canvas mCanvas;
     GestureDetector gestureDetector;
     boolean canvasInitiated = false;
-
+    Button start;
     public GameFragment(){}
 
     @Nullable
@@ -40,7 +41,9 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         //Canvas
         this.ivCanvas = view.findViewById(R.id.iv_canvas);
         this.ivCanvas.setOnTouchListener(this);
-        initiateCanvas();
+
+        this.start = view.findViewById(R.id.btnStart);
+        start.setOnClickListener(this);
 
         //Gesture Detector
         this.gestureDetector = new GestureDetector(getContext(),this);
@@ -62,6 +65,14 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     public static GameFragment newInstance(){
         GameFragment fragment = new GameFragment();
         return fragment;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if ( v == start){
+            initiateCanvas();
+            v.setVisibility(View.GONE);
+        }
     }
 
     public void initiateCanvas(){
@@ -119,6 +130,4 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         Log.d("gesture", "onDown: on_fling");
         return false;
     }
-
-
 }
