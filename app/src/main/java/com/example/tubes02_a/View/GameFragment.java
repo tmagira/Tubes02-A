@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -28,9 +30,13 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     Bitmap mBitmap;
     ImageView ivCanvas;
     Canvas mCanvas;
+    Paint paint;
     GestureDetector gestureDetector;
     boolean canvasInitiated = false;
     Button start;
+    protected ThreadHandler objThread;
+    protected MovingTileThread objTest;
+
     public GameFragment(){}
 
     @Nullable
@@ -40,13 +46,16 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
 
         //Canvas
         this.ivCanvas = view.findViewById(R.id.iv_canvas);
-        this.ivCanvas.setOnTouchListener(this);
+//        this.ivCanvas.setOnTouchListener(this);
 
         this.start = view.findViewById(R.id.btnStart);
         start.setOnClickListener(this);
 
         //Gesture Detector
         this.gestureDetector = new GestureDetector(getContext(),this);
+
+        this.objThread = new ThreadHandler(this);
+        this.objTest = new MovingTileThread(this.objThread,this);
 
         return view;
     }
@@ -71,25 +80,31 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     public void onClick(View v) {
         if ( v == start){
             initiateCanvas();
-            v.setVisibility(View.GONE);
+            objTest.startThread();
         }
     }
 
     public void initiateCanvas(){
-        //Getting Screen Sizes
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
         //Create BitMap
-        this.mBitmap = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+        this.mBitmap = Bitmap.createBitmap(ivCanvas.getWidth(),ivCanvas.getHeight(),Bitmap.Config.ARGB_8888);
         this.ivCanvas.setImageBitmap(mBitmap);
         this.mCanvas = new Canvas(mBitmap);
 
-        int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.teal_200, null);
-        this.mCanvas.drawColor(mColorBackground);
+        int mColorTest = ResourcesCompat.getColor(getResources(), R.color.design_default_color_primary_dark, null);
 
-        this.canvasInitiated = true;
+        paint = new Paint();
+        paint.setColor(mColorTest);
+
         this.ivCanvas.invalidate();
+    }
+
+    public float screenX(){
+        return this.ivCanvas.getWidth();
+    }
+
+    public float screenY(){
+        return this.ivCanvas.getHeight();
     }
 
     @Override
