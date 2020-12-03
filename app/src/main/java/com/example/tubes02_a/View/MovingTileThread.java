@@ -13,7 +13,6 @@ public class MovingTileThread implements Runnable {
     boolean isCancelled;
     int col ;
 
-
     public MovingTileThread (ThreadHandler threadHandler, GameFragment gameFragment, int col){
         this.thread = new Thread(this);
         this.gameFragment = gameFragment;
@@ -22,14 +21,12 @@ public class MovingTileThread implements Runnable {
     }
 
     public void startThread(){
-
         this.thread.start();
     }
 
 
     @Override
     public void run() {
-
         while(!isCancelled) {
             try {
                 Thread.sleep(10);
@@ -40,7 +37,5 @@ public class MovingTileThread implements Runnable {
             threadHandler.colToDraw(this.col);;
             if(isCancelled) break;
         }
-
-
     }
 }

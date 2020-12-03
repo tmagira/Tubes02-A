@@ -19,16 +19,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ThreadHandler extends Handler {
-
     protected GameFragment gameFragment;
-    Random r = new Random();
-    int col,gap;
-    Canvas kolom;
-    ImageView iv;
-    boolean toDraw ;
-    float topPost = 0 ;
-//    Random r = new Random();
-    float bottomPost;
+    private Random r = new Random();
+    private int col;
+    private Canvas kolom;
+    private ImageView iv;
+    private boolean toDraw ;
+    private float topPost = 0 ;
+    private float bottomPost;
+
     public ThreadHandler(GameFragment gameFragment){
         this.gameFragment = gameFragment;
         this.bottomPost =   this.gameFragment.getScreenHeight() / 4;
@@ -36,13 +35,13 @@ public class ThreadHandler extends Handler {
 
     @Override
     public void handleMessage( Message msg){
-//        if (msg.what == 1){
-//            this.col = (int) msg.obj;
-//        }
-//        if (msg.what == 0){
-//            this.random = (boolean) msg.obj;
-//        }
 
+        //read message
+        if (msg.what == 0){
+            this.col = (int) msg.obj;
+        }
+
+        //menentukan kolom yang akan digambar
         switch(this.col) {
             case 1:
                 this.kolom = this.gameFragment.mCanvas1;
@@ -62,16 +61,13 @@ public class ThreadHandler extends Handler {
                 break;
         }
 
-        if(topPost<=this.gameFragment.getScreenHeight()){
+
+        if(topPost<=this.gameFragment.getScreenHeight()){ //jika belum melewati batas bawah akan menggambar note
             drawNote();
-        }else {
+        }else{                                            //jika sudah akan reset
             topPost = 0;
             bottomPost= this.gameFragment.getScreenHeight()/4;
         }
-
-
-
-                Log.d("tracker", "handleMessage: "+this.col+" "+topPost);
 
     }
 
@@ -80,30 +76,30 @@ public class ThreadHandler extends Handler {
         msg.what = 0;
         msg.obj = col;
         this.sendMessage(msg);
-
-        this.col = col;
     }
 
     public void drawNote(){
+
+        //menggerakkan koordinat note
         this.topPost += 10;
         this.bottomPost += 10;
 
 
-        if(this.topPost<=gameFragment.ivCanvas1.getHeight()) {
+        //jika belum melewati batas bawah layar dan true akan draw rect
+        //jika sudah akan melewati maka akan random menentukan apakah akan draw atau tidak (true - ya, false - tidak)
+        if(this.topPost<=this.gameFragment.getScreenHeight()) {
             if(toDraw){
-                Log.d("sizez", "topPost: " + this.topPost);
-                this.kolom.drawColor(Color.parseColor("#f55142"));
+                this.kolom.drawColor(Color.parseColor("#FF03DAC5"));
                 this.kolom.drawRect(0, this.topPost, this.iv.getWidth(), this.bottomPost, this.gameFragment.notePaint);
                 this.iv.invalidate();
             }
-        }else if(this.topPost>gameFragment.getScreenHeight()){
+        }else if(this.topPost>this.gameFragment.getScreenHeight()){
             this.toDraw = r.nextBoolean();
             this.topPost=-50;
             this.bottomPost=topPost+gameFragment.getScreenHeight()/4;
-            this.kolom.drawColor(Color.parseColor("#f55142"));
+            this.kolom.drawColor(Color.parseColor("#FF03DAC5"));
             this.iv.invalidate();
 
         }
-        Log.d("gap", "topPost: " + toDraw);
     }
 }
