@@ -36,8 +36,8 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     GestureDetector gestureDetector;
     boolean canvasInitiated = false;
     Button start;
-    protected ThreadHandler threadHandler;
-    protected MovingTileThread movingTileThread;
+    protected ThreadHandler threadHandler, threadHandler2;
+    protected MovingTileThread movingTileThread, movingTileThread2;
 
     public GameFragment(){}
 
@@ -60,7 +60,9 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         this.gestureDetector = new GestureDetector(getContext(),this);
 
         this.threadHandler = new ThreadHandler(this);
-        this.movingTileThread = new MovingTileThread(this.threadHandler,this);
+        this.threadHandler2 = new ThreadHandler(this);
+        this.movingTileThread = new MovingTileThread(this.threadHandler,this,1);
+        this.movingTileThread2 = new MovingTileThread(this.threadHandler2,this,2);
 
         return view;
     }
@@ -86,6 +88,7 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         if ( v == start){
             initiateCanvas();
             movingTileThread.startThread();
+            movingTileThread2.startThread();
             this.start.setVisibility(View.GONE);
         }
     }
@@ -128,11 +131,11 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         this.ivCanvas1.invalidate();
     }
 
-    public static int getScreenWidth() {
+    public  int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
-    public static int getScreenHeight() {
+    public  int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 

@@ -10,44 +10,39 @@ public class MovingTileThread implements Runnable {
     protected Thread thread;
     protected ThreadHandler threadHandler;
     protected GameFragment gameFragment;
-    float widthTile = 0, heightTile = 0, startX = 0;
-    boolean check = true;
+    boolean isCancelled;
+    int col ;
 
 
-    public MovingTileThread (ThreadHandler threadHandler, GameFragment gameFragment){
+    public MovingTileThread (ThreadHandler threadHandler, GameFragment gameFragment, int col){
         this.thread = new Thread(this);
         this.gameFragment = gameFragment;
         this.threadHandler = threadHandler;
+        this.col = col;
     }
 
     public void startThread(){
+
         this.thread.start();
     }
 
     private void refresh() {
-        threadHandler.postDelayed(this,1000);
-
+        threadHandler.postDelayed(this,2000);
     }
 
     @Override
     public void run() {
-//        if ( check == true){
-//            widthTile = this.gameFragment.getScreenWidth() / 4;
-//            heightTile = this.gameFragment.getScreenHeight()/ 4;
-//            check = false;
-//        }
-//
-        Random random = new Random();
-        int columnATM = random.nextInt(5 - 1) + 1;
-        Log.d("tHREADZ", Integer.toString(columnATM));
+        while(!isCancelled) {
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                Thread.interrupted();
+            }
+            threadHandler.removeCallbacksAndMessages(null);
+            threadHandler.colToDraw(this.col);;
 
-        //kiri = startX + (( (float) columnATM - 1) * widthTile);
-       // kanan = kiri + widthTile;
+            if(isCancelled) break;
+        }
 
-        Log.d("threadz", "run: masuk 1");
-
-        threadHandler.colToDraw(columnATM);
-        refresh();
-        //
     }
 }
