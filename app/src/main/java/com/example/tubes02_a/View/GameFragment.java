@@ -81,6 +81,7 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         if ( v == start){
             initiateCanvas();
             objTest.startThread();
+            this.start.setVisibility(View.GONE);
         }
     }
 
