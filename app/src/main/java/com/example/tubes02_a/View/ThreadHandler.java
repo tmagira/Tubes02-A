@@ -1,5 +1,6 @@
 package com.example.tubes02_a.View;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -7,6 +8,7 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.core.content.res.ResourcesCompat;
 
@@ -18,35 +20,47 @@ import java.util.TimerTask;
 public class ThreadHandler extends Handler {
 
     protected GameFragment gameFragment;
-    String left = "1";
-    String right = "1";
-    int i=0;
-
-    float leftPost , rightPost ;
+    String random = "1";
+    Canvas kolom;
+    ImageView iv;
     float topPost ;
     float bottomPost ;
-
     public ThreadHandler(GameFragment gameFragment){
         this.gameFragment = gameFragment;
     }
 
     @Override
     public void handleMessage( Message msg){
-       Timer timer = new Timer();
-       Handler handler = new Handler();
-
-        if (msg.what == 0){
-            left = (String)msg.obj;
-        }
+        Timer timer = new Timer();
+        Handler handler = new Handler();
         if (msg.what == 1){
-            right = (String)msg.obj;
+            random = msg.obj.toString();
+        }
+        this.topPost = 0;
+        this.bottomPost =  this.gameFragment.ivCanvas1.getHeight() / 4;
+
+        switch(random) {
+            case "1":
+                this.kolom = this.gameFragment.mCanvas1;
+                this.iv = this.gameFragment.ivCanvas1;
+                break;
+            case "2":
+                this.kolom = this.gameFragment.mCanvas2;
+                this.iv = this.gameFragment.ivCanvas2;
+                break;
+            case "3":
+                this.kolom = this.gameFragment.mCanvas3;
+                this.iv = this.gameFragment.ivCanvas3;
+                break;
+            case "4":
+                this.kolom = this.gameFragment.mCanvas4;
+                this.iv = this.gameFragment.ivCanvas4;
+                break;
         }
 
-        this.leftPost = Float.valueOf(left);
-        this.rightPost = Float.valueOf(right);
-        this.topPost = -20;
-        this.bottomPost =  this.gameFragment.ivCanvas.getHeight() / 4;
-
+        Log.d("sizez", "handleMessage: "+ random);
+        this.kolom.drawRect(0,this.topPost, 180,this.bottomPost, this.gameFragment.notePaint);
+        this.iv.invalidate();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -54,35 +68,31 @@ public class ThreadHandler extends Handler {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                       if(topPost>gameFragment.ivCanvas.getHeight()){
-                           cancel();
-                           Log.d("test", "run: berenti");
-                       }else {drawNote();}
+                        if(topPost>gameFragment.ivCanvas1.getHeight()+10){
+                            cancel();
+                            Log.d("test", "run: berenti");
+                        }else {drawNote();}
                     }
                 });
             }
-        }, 0, 100);
+        }, 0, 20);
+
     }
 
-    public void setLeft(String output){
-        Message msg = new Message();
-        msg.what = 0;
-        msg.obj = output;
-        this.sendMessage(msg);
-    }
-
-     public void setRight(String output){
+    public void colToDraw(int output){
         Message msg = new Message();
         msg.what = 1;
         msg.obj = output;
         this.sendMessage(msg);
     }
 
+
     public void drawNote(){
+        Log.d("sizez", "topPost: "+this.topPost);
         this.topPost+=10;
         this.bottomPost+=10;
-        this.gameFragment.mCanvas.drawColor(Color.parseColor("#a6fff6"));
-        this.gameFragment.mCanvas.drawRect(leftPost,topPost, rightPost, bottomPost, this.gameFragment.paint);
-        this.gameFragment.ivCanvas.invalidate();
+        this.kolom.drawColor(Color.parseColor("#f55142"));
+        this.kolom.drawRect(0,this.topPost, 180,this.bottomPost, this.gameFragment.notePaint);
+        this.iv.invalidate();
     }
 }

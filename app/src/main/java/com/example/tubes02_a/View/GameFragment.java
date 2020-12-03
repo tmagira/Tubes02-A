@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -27,15 +29,15 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
 
     private FragmentListener listener;
 
-    Bitmap mBitmap;
-    ImageView ivCanvas;
-    Canvas mCanvas;
-    Paint paint;
+    Bitmap mBitmap1, mBitmap2, mBitmap3, mBitmap4;
+    ImageView ivCanvas1, ivCanvas2, ivCanvas3, ivCanvas4;
+    Canvas mCanvas1, mCanvas2, mCanvas3, mCanvas4;
+    Paint paint, notePaint;
     GestureDetector gestureDetector;
     boolean canvasInitiated = false;
     Button start;
-    protected ThreadHandler objThread;
-    protected MovingTileThread objTest;
+    protected ThreadHandler threadHandler;
+    protected MovingTileThread movingTileThread;
 
     public GameFragment(){}
 
@@ -45,7 +47,10 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         View view = inflater.inflate(R.layout.game_fragment,container, false);
 
         //Canvas
-        this.ivCanvas = view.findViewById(R.id.iv_canvas);
+        this.ivCanvas1 = view.findViewById(R.id.iv_canvas1);
+        this.ivCanvas2 = view.findViewById(R.id.iv_canvas2);
+        this.ivCanvas3 = view.findViewById(R.id.iv_canvas3);
+        this.ivCanvas4 = view.findViewById(R.id.iv_canvas4);
 //        this.ivCanvas.setOnTouchListener(this);
 
         this.start = view.findViewById(R.id.btnStart);
@@ -54,8 +59,8 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         //Gesture Detector
         this.gestureDetector = new GestureDetector(getContext(),this);
 
-        this.objThread = new ThreadHandler(this);
-        this.objTest = new MovingTileThread(this.objThread,this);
+        this.threadHandler = new ThreadHandler(this);
+        this.movingTileThread = new MovingTileThread(this.threadHandler,this);
 
         return view;
     }
@@ -80,31 +85,55 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     public void onClick(View v) {
         if ( v == start){
             initiateCanvas();
-            objTest.startThread();
+            movingTileThread.startThread();
+            this.start.setVisibility(View.GONE);
         }
     }
 
     public void initiateCanvas(){
+       int screenWidth = getScreenWidth();
+       int screenHeight = getScreenHeight();
 
         //Create BitMap
-        this.mBitmap = Bitmap.createBitmap(ivCanvas.getWidth(),ivCanvas.getHeight(),Bitmap.Config.ARGB_8888);
-        this.ivCanvas.setImageBitmap(mBitmap);
-        this.mCanvas = new Canvas(mBitmap);
+        this.mBitmap1 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
+        this.mBitmap2 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
+        this.mBitmap3 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
+        this.mBitmap4 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
 
-        int mColorTest = ResourcesCompat.getColor(getResources(), R.color.design_default_color_primary_dark, null);
+        this.ivCanvas1.setImageBitmap(mBitmap1);
+        this.ivCanvas2.setImageBitmap(mBitmap2);
+        this.ivCanvas3.setImageBitmap(mBitmap3);
+        this.ivCanvas4.setImageBitmap(mBitmap4);
 
+        this.mCanvas1 = new Canvas(mBitmap1);
+        this.mCanvas2 = new Canvas(mBitmap2);
+        this.mCanvas3 = new Canvas(mBitmap3);
+        this.mCanvas4 = new Canvas(mBitmap4);
+
+        int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.teal_200, null);
         paint = new Paint();
-        paint.setColor(mColorTest);
+        paint.setColor(mColorBackground);
 
-        this.ivCanvas.invalidate();
+        int noteColor = ResourcesCompat.getColor(getResources(), R.color.black, null);
+        notePaint = new Paint();
+        notePaint.setColor(noteColor);
+
+        this.mCanvas1.drawColor(mColorBackground);
+        this.mCanvas2.drawColor(Color.parseColor("#f55142"));
+        this.mCanvas3.drawColor(mColorBackground);
+        this.mCanvas4.drawColor(Color.parseColor("#f55142"));
+
+
+        this.canvasInitiated = true;
+        this.ivCanvas1.invalidate();
     }
 
-    public float screenX(){
-        return this.ivCanvas.getWidth();
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
-    public float screenY(){
-        return this.ivCanvas.getHeight();
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     @Override
