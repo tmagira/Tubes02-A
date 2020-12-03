@@ -5,8 +5,23 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
     <ImageView
-        android:id="@+id/iv_canvas"
-        android:layout_width="match_parent"
+        android:id="@+id/iv_canvas1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+    <ImageView
+        android:id="@+id/iv_canvas2"
+        android:layout_toRightOf="@+id/iv_canvas1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+    <ImageView
+        android:id="@+id/iv_canvas3"
+        android:layout_toRightOf="@+id/iv_canvas2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+    <ImageView
+        android:id="@+id/iv_canvas4"
+        android:layout_toRightOf="@+id/iv_canvas3"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"/>
 
     <TextView

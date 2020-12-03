@@ -25,32 +25,28 @@ public class MovingTileThread implements Runnable {
     }
 
     private void refresh() {
-        threadHandler.postDelayed(this,2000);
+        threadHandler.postDelayed(this,1000);
+
     }
 
     @Override
     public void run() {
-
-        float kiri, kanan;
-
-        if ( check == true){
-            widthTile = this.gameFragment.screenX() / 4;
-            heightTile = this.gameFragment.screenY()/ 4;
-            check = false;
-        }
-
+//        if ( check == true){
+//            widthTile = this.gameFragment.getScreenWidth() / 4;
+//            heightTile = this.gameFragment.getScreenHeight()/ 4;
+//            check = false;
+//        }
+//
         Random random = new Random();
-
         int columnATM = random.nextInt(5 - 1) + 1;
+        Log.d("tHREADZ", Integer.toString(columnATM));
 
-//        Log.d("test", Integer.toString(columnATM));
+        //kiri = startX + (( (float) columnATM - 1) * widthTile);
+       // kanan = kiri + widthTile;
 
-        kiri = startX + (( (float) columnATM - 1) * widthTile);
-        kanan = kiri + widthTile;
+        Log.d("threadz", "run: masuk 1");
 
-        threadHandler.setLeft(String.valueOf(kiri));
-        threadHandler.setRight(String.valueOf(kanan));
-
-        refresh();
+        threadHandler.colToDraw(columnATM);
+        //refresh();
     }
 }
