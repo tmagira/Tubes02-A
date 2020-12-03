@@ -47,7 +47,7 @@ public class MovingTileThread implements Runnable {
         Log.d("threadz", "run: masuk 1");
 
         threadHandler.colToDraw(columnATM);
-        //refresh();
+        refresh();
         //
     }
 }

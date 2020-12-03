@@ -59,8 +59,9 @@ public class ThreadHandler extends Handler {
         }
 
         Log.d("sizez", "handleMessage: "+ random);
-        this.kolom.drawRect(0,this.topPost, 180,this.bottomPost, this.gameFragment.notePaint);
+        //this.kolom.drawRect(0,this.topPost, 180,this.bottomPost, this.gameFragment.notePaint);
         this.iv.invalidate();
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -92,7 +93,7 @@ public class ThreadHandler extends Handler {
         this.topPost+=10;
         this.bottomPost+=10;
         this.kolom.drawColor(Color.parseColor("#f55142"));
-        this.kolom.drawRect(0,this.topPost, 180,this.bottomPost, this.gameFragment.notePaint);
+        this.kolom.drawRect(0,this.topPost, this.iv.getWidth(),this.bottomPost, this.gameFragment.notePaint);
         this.iv.invalidate();
     }
 }
