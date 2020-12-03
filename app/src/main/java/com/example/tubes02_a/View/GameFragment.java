@@ -36,8 +36,8 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     GestureDetector gestureDetector;
     boolean canvasInitiated = false;
     Button start;
-    protected ThreadHandler threadHandler, threadHandler2;
-    protected MovingTileThread movingTileThread, movingTileThread2;
+    protected ThreadHandler threadHandler, threadHandler2,threadHandler3,threadHandler4;
+    protected MovingTileThread movingTileThread, movingTileThread2, movingTileThread3, movingTileThread4;
 
     public GameFragment(){}
 
@@ -59,10 +59,16 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         //Gesture Detector
         this.gestureDetector = new GestureDetector(getContext(),this);
 
+        //Threads
         this.threadHandler = new ThreadHandler(this);
         this.threadHandler2 = new ThreadHandler(this);
+        this.threadHandler3 = new ThreadHandler(this);
+        this.threadHandler4 = new ThreadHandler(this);
+
         this.movingTileThread = new MovingTileThread(this.threadHandler,this,1);
         this.movingTileThread2 = new MovingTileThread(this.threadHandler2,this,2);
+        this.movingTileThread3 = new MovingTileThread(this.threadHandler2,this,3);
+        this.movingTileThread4 = new MovingTileThread(this.threadHandler2,this,4);
 
         return view;
     }
@@ -86,9 +92,16 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     @Override
     public void onClick(View v) {
         if ( v == start){
+
             initiateCanvas();
+
+            //Memulai Thread
             movingTileThread.startThread();
             movingTileThread2.startThread();
+            movingTileThread3.startThread();
+            movingTileThread4.startThread();
+
+
             this.start.setVisibility(View.GONE);
         }
     }
@@ -122,13 +135,16 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         notePaint.setColor(noteColor);
 
         this.mCanvas1.drawColor(mColorBackground);
-        this.mCanvas2.drawColor(Color.parseColor("#f55142"));
+        this.mCanvas2.drawColor(mColorBackground);
         this.mCanvas3.drawColor(mColorBackground);
-        this.mCanvas4.drawColor(Color.parseColor("#f55142"));
-
+        this.mCanvas4.drawColor(mColorBackground);
 
         this.canvasInitiated = true;
+
         this.ivCanvas1.invalidate();
+        this.ivCanvas2.invalidate();
+        this.ivCanvas3.invalidate();
+        this.ivCanvas4.invalidate();
     }
 
     public  int getScreenWidth() {
