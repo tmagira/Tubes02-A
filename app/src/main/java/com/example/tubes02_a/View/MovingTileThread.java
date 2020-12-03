@@ -48,5 +48,6 @@ public class MovingTileThread implements Runnable {
 
         threadHandler.colToDraw(columnATM);
         //refresh();
+        //
     }
 }
