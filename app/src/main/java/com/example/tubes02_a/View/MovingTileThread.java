@@ -25,7 +25,7 @@ public class MovingTileThread implements Runnable {
     }
 
     private void refresh() {
-        threadHandler.postDelayed(this,1000);
+        threadHandler.postDelayed(this,500);
     }
 
     @Override
