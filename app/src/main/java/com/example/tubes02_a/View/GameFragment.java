@@ -67,8 +67,8 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
 
         this.movingTileThread = new MovingTileThread(this.threadHandler,this,1);
         this.movingTileThread2 = new MovingTileThread(this.threadHandler2,this,2);
-        this.movingTileThread3 = new MovingTileThread(this.threadHandler2,this,3);
-        this.movingTileThread4 = new MovingTileThread(this.threadHandler2,this,4);
+        this.movingTileThread3 = new MovingTileThread(this.threadHandler3,this,3);
+        this.movingTileThread4 = new MovingTileThread(this.threadHandler4,this,4);
 
         return view;
     }

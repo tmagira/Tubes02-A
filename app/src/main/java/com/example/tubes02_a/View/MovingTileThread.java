@@ -26,23 +26,21 @@ public class MovingTileThread implements Runnable {
         this.thread.start();
     }
 
-    private void refresh() {
-        threadHandler.postDelayed(this,2000);
-    }
 
     @Override
     public void run() {
+
         while(!isCancelled) {
             try {
-                Thread.sleep(30);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 Thread.interrupted();
             }
             threadHandler.removeCallbacksAndMessages(null);
             threadHandler.colToDraw(this.col);;
-
             if(isCancelled) break;
         }
+
 
     }
 }

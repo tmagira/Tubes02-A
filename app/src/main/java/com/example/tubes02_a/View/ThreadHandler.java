@@ -21,11 +21,13 @@ import java.util.TimerTask;
 public class ThreadHandler extends Handler {
 
     protected GameFragment gameFragment;
-    int col;
+    Random r = new Random();
+    int col,gap;
     Canvas kolom;
     ImageView iv;
+    boolean toDraw ;
     float topPost = 0 ;
-    Random r = new Random();
+//    Random r = new Random();
     float bottomPost;
     public ThreadHandler(GameFragment gameFragment){
         this.gameFragment = gameFragment;
@@ -60,14 +62,16 @@ public class ThreadHandler extends Handler {
                 break;
         }
 
-                if(topPost<=this.gameFragment.getScreenHeight()){
-                    drawNote();
-                }else{
-                    int random = r.nextInt(3000);
-                    topPost=-random;
-                    bottomPost=topPost+this.gameFragment.getScreenHeight()/4;
-                }
-                Log.d("tracker", "handleMessage: maju");
+        if(topPost<=this.gameFragment.getScreenHeight()){
+            drawNote();
+        }else {
+            topPost = 0;
+            bottomPost= this.gameFragment.getScreenHeight()/4;
+        }
+
+
+
+                Log.d("tracker", "handleMessage: "+this.col+" "+topPost);
 
     }
 
@@ -80,18 +84,26 @@ public class ThreadHandler extends Handler {
         this.col = col;
     }
 
-
     public void drawNote(){
         this.topPost += 10;
         this.bottomPost += 10;
+
+
         if(this.topPost<=gameFragment.ivCanvas1.getHeight()) {
-            Log.d("sizez", "topPost: " + this.topPost);
+            if(toDraw){
+                Log.d("sizez", "topPost: " + this.topPost);
+                this.kolom.drawColor(Color.parseColor("#f55142"));
+                this.kolom.drawRect(0, this.topPost, this.iv.getWidth(), this.bottomPost, this.gameFragment.notePaint);
+                this.iv.invalidate();
+            }
+        }else if(this.topPost>gameFragment.getScreenHeight()){
+            this.toDraw = r.nextBoolean();
+            this.topPost=-50;
+            this.bottomPost=topPost+gameFragment.getScreenHeight()/4;
             this.kolom.drawColor(Color.parseColor("#f55142"));
-            this.kolom.drawRect(0, this.topPost, this.iv.getWidth(), this.bottomPost, this.gameFragment.notePaint);
             this.iv.invalidate();
-        }else{
-            this.kolom.drawColor(Color.parseColor("#f55142"));
-            this.iv.invalidate();
+
         }
+        Log.d("gap", "topPost: " + toDraw);
     }
 }
