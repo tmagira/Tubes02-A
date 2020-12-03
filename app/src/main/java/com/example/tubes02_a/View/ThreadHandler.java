@@ -31,12 +31,12 @@ public class ThreadHandler extends Handler {
             right = (String)msg.obj;
         }
 
+        Log.d("test", left);
 
         float leftPost = Float.valueOf(left), rightPost = Float.valueOf(right);
         float topPost = 0, bottomPost = this.gameFragment.ivCanvas.getHeight() / 4;
         this.gameFragment.mCanvas.drawColor(Color.parseColor("#a6fff6"));
         this.gameFragment.mCanvas.drawRect(leftPost,topPost, rightPost,bottomPost, this.gameFragment.paint);
-        this.gameFragment.ivCanvas.invalidate();
     }
 
     public void setLeft(String output){
