@@ -8,6 +8,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,7 +31,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.tubes02_a.R;
 
-public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener, View.OnClickListener{
+public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener, View.OnClickListener, SensorEventListener {
 
     private FragmentListener listener;
 
@@ -44,6 +48,12 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     PointF pointF;
     protected ThreadHandler threadHandler, threadHandler2,threadHandler3,threadHandler4;
     protected MovingTileThread movingTileThread, movingTileThread2, movingTileThread3, movingTileThread4;
+    SensorManager mSensorManager;
+    Sensor accelerometer;
+    Sensor magnetometer;
+    float[] accelerometerReading;
+    float[] magnetometerReading;
+    float VALUE_DRIFT = 0.05f;
 
     public GameFragment(){}
 
@@ -84,6 +94,11 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         this.movingTileThread2 = new MovingTileThread(this.threadHandler2,this,2);
         this.movingTileThread3 = new MovingTileThread(this.threadHandler3,this,3);
         this.movingTileThread4 = new MovingTileThread(this.threadHandler4,this,4);
+
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+
+        this.accelerometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        this.magnetometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         return view;
     }
@@ -219,5 +234,63 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         Log.d("gesture", "onDown: on_fling");
         return false;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        int sensorType = event.sensor.getType();
+        switch (sensorType){
+            case Sensor.TYPE_ACCELEROMETER:
+                this.accelerometerReading = event.values.clone();
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                this.magnetometerReading = event.values.clone();
+                break;
+        }
+        if(magnetometerReading != null && accelerometerReading != null) {
+            final float[] rotationMatrix = new float[9];
+            mSensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
+
+            final float[] orientationAngles = new float[3];
+            mSensorManager.getOrientation(rotationMatrix, orientationAngles);
+
+            float azimuth = orientationAngles[0];
+            float pitch = orientationAngles[1];
+            float roll = orientationAngles[2];
+
+            if (Math.abs(azimuth) < VALUE_DRIFT) {
+                azimuth = 0;
+            }
+
+            if (Math.abs(pitch) < VALUE_DRIFT) {
+                pitch = 0;
+            }
+
+            if (Math.abs(roll) < VALUE_DRIFT) {
+                roll = 0;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ( accelerometer != null){
+            mSensorManager.registerListener(this,accelerometer,mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if ( magnetometer != null){
+            mSensorManager.registerListener(this,magnetometer,mSensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 }
