@@ -144,16 +144,16 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     public boolean onTouch(View v, MotionEvent event) {
         int nomorKolom;
         switch(v.getId()) {
-            case 2131230909:
+            case 2131230910:
                nomorKolom = 1;
                 break;
-            case 2131230910:
+            case 2131230911:
                nomorKolom = 2;
                 break;
-            case 2131230911:
+            case 2131230912:
                nomorKolom = 3;
                 break;
-            case 2131230912:
+            case 2131230913:
                nomorKolom = 4;
                 break;
             default:
@@ -226,8 +226,9 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
     public void removeLife() {
         this.life--;
-        this.tvLife.setText(Integer.toString(this.life));
-        if(life<=0){
+        if (life >= 0) {
+            this.tvLife.setText(Integer.toString(this.life));
+        }else{
             this.threadStarter.terminate();
 
             for(int i=0;i<this.threadList.size();i++){
