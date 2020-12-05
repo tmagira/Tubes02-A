@@ -9,7 +9,7 @@ public class TileThread extends Thread{
     protected Tile tileStart, tileEnd;
     protected float leftStart, topStart, rightStart, botStart;
     protected float leftEnd, topEnd, rightEnd, botEnd;
-    protected boolean stopped = false;
+    protected boolean isStopped = false;
     protected boolean isClicked = false;
     protected int randCol;
 
@@ -36,12 +36,12 @@ public class TileThread extends Thread{
 
     public void stopThread(){
         Log.d("TAG", "stopThread: ");
-        this.stopped = true;
+        this.isStopped = true;
     }
 
     public void run() {
-        this.stopped = false;
-        while(checkValid(this.tileStart.getTop())){
+        this.isStopped = false;
+        while(!isStopped && isValid(this.tileStart.getTop())){
             try {
                 Thread.sleep(100);
                 if(!this.isClicked){
@@ -62,24 +62,21 @@ public class TileThread extends Thread{
         return;
     }
 
-//    public void checkTap(Coordinate tap){
-//        if(!isClicked){
-//            if(tap.getX() >= this.coordinateStart.getX() - 100 && tap.getX() <= this.coordinateStart.getX() + 100){
-//                if(tap.getY() >= this.coordinateStart.getY() - 100 && tap.getY() <= this.coordinateStart.getY() + 100){
-//                    this.uiThreadedWrapper.addScore();
-//                    this.isClicked = true;
-//                    //this.stopThread();
-//                    uiThreadedWrapper.clearCircle(new Coordinate(this.coordinateStart.getX(), this.coordinateStart.getY()));
-//                }
-//            }
-//        }
-//    }
+    public void checkTouched(Tile touchedTile){
+        if(!isClicked){
+            if(touchedTile.getTop()>=this.tileStart.getTop() && touchedTile.getBottom()<=this.tileStart.getBottom()){
+                this.isClicked = true;
+                tileHandler.removeTile(new Tile(this.tileStart.getLeft(), this.tileStart.getTop(), this.tileStart.getRight(), this.tileStart.getBottom(), this.tileStart.getCol()));
+                tileHandler.addScore();
+            }
+        }
+    }
 
-    public boolean checkValid(float top){
+    public boolean isValid(float top){
         if(top < 0){
             return false;
         }
-        if(top > this.tileEnd.getTop()+10){
+        if(top > this.tileEnd.getTop()){
             return false;
         }
         return true;

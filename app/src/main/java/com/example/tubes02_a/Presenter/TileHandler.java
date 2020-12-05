@@ -35,9 +35,10 @@ public class TileHandler extends Handler{
         } else if(msg.what == TileHandler.ADD_SCORE){
             this.gameFragment.addScore();
         } else if(msg.what == TileHandler.REMOVE_LIFE){
-            this.gameFragment.addPenalty();
+            this.gameFragment.removeLife();
         }
     }
+
 
     public void addTile(Tile tile){
         Message msg = new Message();
