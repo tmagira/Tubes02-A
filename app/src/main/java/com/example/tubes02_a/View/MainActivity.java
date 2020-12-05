@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
 
     private MainMenuFragment mainMenuFragment;
     private GameFragment gameFragment;
+    private GameOverFragment gameOverFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction ft;
     int score;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
         this.fragmentManager = this.getSupportFragmentManager();
         this.mainMenuFragment = MainMenuFragment.newInstance();
         this.gameFragment = GameFragment.newInstance();
+        this.gameOverFragment = GameOverFragment.newInstance();
         this.score=0;
         // hapus test
         changePage(1);
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
             ft.replace(R.id.fragment_container, this.mainMenuFragment);
         }else if (page == 2) {
             ft.replace(R.id.fragment_container, this.gameFragment).addToBackStack(null);
+        }else if ( page == 3){
+            ft.replace(R.id.fragment_container, this.gameOverFragment).addToBackStack(null);
         }
         this.ft.commit();
     }
