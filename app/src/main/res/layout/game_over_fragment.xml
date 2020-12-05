@@ -49,12 +49,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Play Again"
+            android:id="@+id/bt_playagain"
             android:layout_margin="10sp"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Main Menu"
+            android:id="@+id/bt_mainmenu"
             android:layout_margin="10sp"/>
     </LinearLayout>
 

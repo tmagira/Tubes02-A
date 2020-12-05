@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -40,6 +41,7 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     TextView tvScore;
     int score;
     int life;
+    PointF pointF;
     protected ThreadHandler threadHandler, threadHandler2,threadHandler3,threadHandler4;
     protected MovingTileThread movingTileThread, movingTileThread2, movingTileThread3, movingTileThread4;
 
@@ -63,6 +65,8 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
         //textview score
         this.tvScore = view.findViewById(R.id.score);
         this.score=0;
+
+        this.pointF =pointF;
 
         //jumlah nyawa
         this.life = 1;
@@ -178,6 +182,8 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        PointF tap = new PointF();
+
         return this.gestureDetector.onTouchEvent(event);
     }
 
