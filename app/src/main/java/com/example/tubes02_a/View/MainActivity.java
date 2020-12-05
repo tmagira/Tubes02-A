@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
     private GameFragment gameFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction ft;
+    int score;
 //caca ubah ini
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
         this.fragmentManager = this.getSupportFragmentManager();
         this.mainMenuFragment = MainMenuFragment.newInstance();
         this.gameFragment = GameFragment.newInstance();
+        this.score=0;
         // hapus test
         changePage(1);
     }

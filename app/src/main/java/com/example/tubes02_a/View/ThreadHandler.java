@@ -27,6 +27,8 @@ public class ThreadHandler extends Handler {
     private boolean toDraw ;
     private float topPost = 0 ;
     private float bottomPost;
+    protected final static int ADD_SCORE=1;
+    protected final static int MIN_LIFE=2;
 
     public ThreadHandler(GameFragment gameFragment){
         this.gameFragment = gameFragment;
@@ -68,7 +70,23 @@ public class ThreadHandler extends Handler {
             topPost = 0;
             bottomPost= this.gameFragment.getScreenHeight()/4;
         }
+        if(msg.what == ThreadHandler.ADD_SCORE){
+            this.gameFragment.addScore();
+        }else if(msg.what == ThreadHandler.MIN_LIFE){
+            this.gameFragment.minLife();
+        }
+    }
+    //menambahkan score
+    public void addScore(){
+        Message msg = new Message();
+        msg.what = ADD_SCORE;
+        this.sendMessage(msg);
+    }
 
+    public void minLife(){
+        Message msg = new Message();
+        msg.what = MIN_LIFE;
+        this.sendMessage(msg);
     }
 
     public void colToDraw(int col){

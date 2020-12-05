@@ -32,6 +32,7 @@
         android:layout_centerHorizontal="true"
         android:text="Score"
         android:textSize="50sp"
+        android:id="@+id/score"
         android:forceHasOverlappingRendering="true"/>
 
     <Button

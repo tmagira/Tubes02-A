@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
@@ -36,6 +37,9 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
     GestureDetector gestureDetector;
     boolean canvasInitiated = false;
     Button start;
+    TextView tvScore;
+    int score;
+    int life;
     protected ThreadHandler threadHandler, threadHandler2,threadHandler3,threadHandler4;
     protected MovingTileThread movingTileThread, movingTileThread2, movingTileThread3, movingTileThread4;
 
@@ -55,6 +59,13 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
 
         this.start = view.findViewById(R.id.btnStart);
         start.setOnClickListener(this);
+
+        //textview score
+        this.tvScore = view.findViewById(R.id.score);
+        this.score=0;
+
+        //jumlah nyawa
+        this.life = 1;
 
         //Gesture Detector
         this.gestureDetector = new GestureDetector(getContext(),this);
@@ -153,6 +164,16 @@ public class GameFragment extends Fragment implements GestureDetector.OnGestureL
 
     public  int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    //untuk tambah score
+    public void addScore(){
+        this.score += 1;
+        this.tvScore.setText("Score"+Integer.toString(this.score));
+    }
+
+    public void minLife(){
+        this.life -=1;
     }
 
     @Override
