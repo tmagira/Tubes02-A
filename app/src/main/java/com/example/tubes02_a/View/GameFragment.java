@@ -53,7 +53,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
     private Button start;
     private int score;
-    private int life = 3;
+    private int life;
     private PointF pointF;
 
     private TextView tvScore, tvLife;
@@ -64,7 +64,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.game_fragment,container, false);
-        Log.d("touchme", "onTouch: apaa u");
+
         this.score = 0;
         this.threadList = new LinkedList<>();
         this.tileHandler = new TileHandler(this);
@@ -86,12 +86,14 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
         //textview score
         this.tvScore = view.findViewById(R.id.score);
+        this.tvLife = view.findViewById(R.id.tv_life);
         this.score=0;
 
         this.pointF =pointF;
 
         //jumlah nyawa
         this.life = 3;
+        this.tvLife.setText(Integer.toString(this.life));
         return view;
     }
 
@@ -224,11 +226,18 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
     public void removeLife() {
         this.life--;
-        Log.d("life", "removeLife: "+this.life);
+        this.tvLife.setText(Integer.toString(this.life));
         if(life<=0){
-            Log.d("life", "removeLife: stop bodo");
             this.threadStarter.terminate();
-           this.threadList.clear();
+
+            for(int i=0;i<this.threadList.size();i++){
+                this.threadList.get(i).stopThread();
+                this.threadList.remove(i);
+            }
+            if(this.threadList.isEmpty()){
+                this.listener.changePage(3);
+            }
+
         }
     }
 

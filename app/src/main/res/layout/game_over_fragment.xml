@@ -36,7 +36,6 @@
         android:layout_above="@id/linear_layout"
         android:layout_margin="20sp"/>
 
-
     <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"

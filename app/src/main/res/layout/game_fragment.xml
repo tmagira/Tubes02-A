@@ -29,16 +29,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
+        android:text="Life "
+        android:textSize="25sp"
+        android:id="@+id/life"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:id="@+id/tv_life"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/life"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Score"
+        android:textSize="25sp"
+        android:id="@+id/scoreTitle"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:textSize="50sp"
         android:id="@+id/score"
-        android:forceHasOverlappingRendering="true"/>
+       android:layout_below="@+id/scoreTitle"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:text="start"
         android:id="@+id/btnStart">

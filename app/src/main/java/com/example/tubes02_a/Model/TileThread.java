@@ -35,7 +35,6 @@ public class TileThread extends Thread{
     }
 
     public void stopThread(){
-        Log.d("TAG", "stopThread: ");
         this.isStopped = true;
     }
 
@@ -64,7 +63,8 @@ public class TileThread extends Thread{
 
     public void checkTouched(Tile touchedTile){
         if(!isClicked){
-            if(touchedTile.getTop()>=this.tileStart.getTop() && touchedTile.getBottom()<=this.tileStart.getBottom()){
+            if(touchedTile.getTop()>=this.tileStart.getTop() && touchedTile.getBottom()<=this.tileStart.getBottom() &&
+                touchedTile.getCol() == this.tileStart.getCol()){
                 this.isClicked = true;
                 tileHandler.removeTile(new Tile(this.tileStart.getLeft(), this.tileStart.getTop(), this.tileStart.getRight(), this.tileStart.getBottom(), this.tileStart.getCol()));
                 tileHandler.addScore();
