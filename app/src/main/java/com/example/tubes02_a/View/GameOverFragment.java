@@ -19,6 +19,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     TextView tvScore, tvHighScore;
     private FragmentListener listener;
     int score;
+    GameFragment gameFragment;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,8 +28,11 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 //        //Initiate Variables
         this.btnPlayAgain = view.findViewById(R.id.bt_playagain);
         this.btnMainMenu = view.findViewById(R.id.bt_mainmenu);
-//        this.tvHighScore = view.findViewById(R.id.score);
-//        this.tvScore = view.findViewById(R.id.tv_score);
+        this.tvHighScore = view.findViewById(R.id.score);
+        this.tvScore = view.findViewById(R.id.tv_score);
+        this.gameFragment = new GameFragment();
+        int scoreAngka = gameFragment.getScore();
+        tvScore.setText("Score : " + scoreAngka);
 //        //this.score = getIntent().getIntExtra("SCORE", 0);
 //        //Listeners
 //        tvScore.setText("Score:" + score);
@@ -47,23 +51,25 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
 //        } else {
 //            tvHighScore.setText("Highs Score" + highScore);
 //        }
+
         return view;
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentListener){
+        if (context instanceof FragmentListener) {
             this.listener = (FragmentListener) context;
-        }else{
-            throw new ClassCastException(context.toString()+ " Must Implement Fragment Listener");
+        } else {
+            throw new ClassCastException(context.toString() + " Must Implement Fragment Listener");
         }
     }
 
-    public static GameOverFragment newInstance(){
+    public static GameOverFragment newInstance() {
         GameOverFragment fragment = new GameOverFragment();
         return fragment;
     }
+
     @Override
     public void onClick(View v) {
         if (v == this.btnMainMenu) {

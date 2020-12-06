@@ -120,7 +120,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
             int randCol = random.nextInt(5 - 1) + 1;
 
             Tile tileEnd = new Tile(0, getScreenHeight(), getScreenWidth(), getScreenHeight() / 4, randCol);
-            Tile tileStart = new Tile(0, 0, getScreenWidth() / 4, getScreenHeight() / 4, randCol);
+            Tile tileStart = new Tile(0, 0, getScreenWidth() , getScreenHeight() / 4, randCol);
 
             this.threadList.addFirst(new TileThread(this.tileHandler, tileEnd, tileStart, randCol));
             this.threadList.getFirst().start();
@@ -222,6 +222,10 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         this.score += 1;
         Log.d("skor", "addScore: "+this.score);
         this.tvScore.setText(Integer.toString(this.score));
+    }
+
+    public int getScore(){
+        return this.score;
     }
 
     public void removeLife() {
