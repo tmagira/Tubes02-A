@@ -230,7 +230,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
     public void removeLife() {
         this.life--;
-        if (life >= 0) {
+        if (life >0) {
             this.tvLife.setText(Integer.toString(this.life));
         }else{
             this.threadStarter.terminate();
