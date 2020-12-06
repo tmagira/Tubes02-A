@@ -36,7 +36,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         //dapet score dari gamefragment
      //  Bundle b = this.getArguments();
     //   int s = b.getInt("SCORE");
-       int scoreAngka = getActivity().getIntent().getIntExtra("SCORE",gameFragment.scorexx);
+       int scoreAngka = getActivity().getIntent().getIntExtra("SCORE",0);
         tvScore.setText("Score : " + (scoreAngka));
 
 

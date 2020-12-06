@@ -56,7 +56,6 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     private int score;
     private int life;
     private PointF pointF;
-    int scorexx=0;
     private TextView tvScore, tvLife;
 
     public GameFragment() {
@@ -151,16 +150,16 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     public boolean onTouch(View v, MotionEvent event) {
         int nomorKolom;
         switch (v.getId()) {
-            case 2131230910:
+            case 2131230911:
                 nomorKolom = 1;
                 break;
-            case 2131230911:
+            case 2131230912:
                 nomorKolom = 2;
                 break;
-            case 2131230912:
+            case 2131230913:
                 nomorKolom = 3;
                 break;
-            case 2131230913:
+            case 2131230914:
                 nomorKolom = 4;
                 break;
             default:
@@ -170,14 +169,11 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         Tile touchedTile = new Tile(0, event.getY(), getScreenWidth() / 4, event.getY(), nomorKolom);
         for (int i = 0; i < this.threadList.size(); i++) {
             this.threadList.get(i).checkTouched(touchedTile);
-            scorexx++;
         }
 
         return true;
     }
-    public int getScore(){
-        return this.scorexx;
-    }
+
 
     public void initiateCanvas() {
         int screenWidth = getScreenWidth();
