@@ -5,6 +5,7 @@ public class Tile {
     float top;
     float right;
     float bottom;
+    int col;
 
     public float getLeft() {
         return left;
@@ -38,10 +39,19 @@ public class Tile {
         this.bottom = bottom;
     }
 
-    public Tile(float left, float top, float right, float bottom) {
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public Tile(float left, float top, float right, float bottom, int col) {
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
+        this.col = col;
     }
 }

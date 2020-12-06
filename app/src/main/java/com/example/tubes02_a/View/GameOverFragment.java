@@ -20,34 +20,32 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     private FragmentListener listener;
     int score;
 
-    public GameOverFragment(){}
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.game_over_fragment, container, false);
 
-        //Initiate Variables
+//        //Initiate Variables
         this.btnPlayAgain = view.findViewById(R.id.bt_playagain);
         this.btnMainMenu = view.findViewById(R.id.bt_mainmenu);
-        this.tvHighScore = view.findViewById(R.id.score);
-        this.tvScore = view.findViewById(R.id.tv_score);
-        this.score = getActivity().getIntent().getIntExtra("SCORE", 0);
-        //Listeners
-        tvScore.setText("Score:" + score);
+//        this.tvHighScore = view.findViewById(R.id.score);
+//        this.tvScore = view.findViewById(R.id.tv_score);
+//        //this.score = getIntent().getIntExtra("SCORE", 0);
+//        //Listeners
+//        tvScore.setText("Score:" + score);
         this.btnPlayAgain.setOnClickListener(this);
         this.btnMainMenu.setOnClickListener(this);
-
-        //highscore
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        int highScore = sharedPreferences.getInt("HIGH_SCORE", 0);
-        if (score > highScore) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("HIGH_SCORE", score);
-            editor.apply();
-
-            tvHighScore.setText("Highs Score" + score);
-        } else {
-            tvHighScore.setText("Highs Score" + highScore);
-        }
+//
+//        //highscore
+//        //SharedPreferences sharedPreferences = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+//        int highScore = sharedPreferences.getInt("HIGH_SCORE", 0);
+//        if (score > highScore) {
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putInt("HIGH_SCORE", score);
+//            editor.apply();
+//
+//            tvHighScore.setText("Highs Score" + score);
+//        } else {
+//            tvHighScore.setText("Highs Score" + highScore);
+//        }
         return view;
     }
 
@@ -65,7 +63,6 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         GameOverFragment fragment = new GameOverFragment();
         return fragment;
     }
-
     @Override
     public void onClick(View v) {
         if (v == this.btnMainMenu) {

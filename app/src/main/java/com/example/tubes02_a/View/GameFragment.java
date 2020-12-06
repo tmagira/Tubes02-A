@@ -8,10 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,6 +15,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,39 +26,37 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.tubes02_a.Model.Tile;
+import com.example.tubes02_a.Model.TileThread;
+import com.example.tubes02_a.Presenter.ThreadStarter;
+import com.example.tubes02_a.Presenter.TileHandler;
 import com.example.tubes02_a.R;
 
-<<<<<<< Updated upstream
-public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener, View.OnClickListener, SensorEventListener {
-
-=======
 import java.util.LinkedList;
 import java.util.Random;
 
 public class GameFragment extends Fragment implements View.OnTouchListener, View.OnClickListener{
-    //test
->>>>>>> Stashed changes
+
     private FragmentListener listener;
 
-    Bitmap mBitmap1, mBitmap2, mBitmap3, mBitmap4;
-    ImageView ivCanvas1, ivCanvas2, ivCanvas3, ivCanvas4;
-    Canvas mCanvas1, mCanvas2, mCanvas3, mCanvas4;
-    Paint paint, notePaint;
-    GestureDetector gestureDetector;
-    boolean canvasInitiated = false;
-    Button start;
-    TextView tvScore;
-    int score;
-    int life;
-    PointF pointF;
-    protected ThreadHandler threadHandler, threadHandler2,threadHandler3,threadHandler4;
-    protected MovingTileThread movingTileThread, movingTileThread2, movingTileThread3, movingTileThread4;
-    SensorManager mSensorManager;
-    Sensor accelerometer;
-    Sensor magnetometer;
-    float[] accelerometerReading;
-    float[] magnetometerReading;
-    float VALUE_DRIFT = 0.05f;
+    private Bitmap mBitmap1, mBitmap2, mBitmap3, mBitmap4;
+    protected ImageView ivCanvas1, ivCanvas2, ivCanvas3, ivCanvas4, iv;
+    protected Canvas mCanvas1, mCanvas2, mCanvas3, mCanvas4, kolom;
+    protected Paint paint, notePaint;
+    private int mColorBackground;
+    private boolean canvasInitiated = false;
+
+    private GestureDetector gestureDetector;
+    private TileHandler tileHandler;
+    private LinkedList<TileThread> threadList;
+    private ThreadStarter threadStarter;
+
+    private Button start;
+    private int score;
+    private int life;
+    private PointF pointF;
+
+    private TextView tvScore, tvLife;
 
     public GameFragment(){}
 
@@ -70,44 +65,35 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.game_fragment,container, false);
 
+        this.score = 0;
+        this.threadList = new LinkedList<>();
+        this.tileHandler = new TileHandler(this);
+        this.threadStarter = new ThreadStarter(this);
+
         //Canvas
         this.ivCanvas1 = view.findViewById(R.id.iv_canvas1);
         this.ivCanvas2 = view.findViewById(R.id.iv_canvas2);
         this.ivCanvas3 = view.findViewById(R.id.iv_canvas3);
         this.ivCanvas4 = view.findViewById(R.id.iv_canvas4);
-//        this.ivCanvas.setOnTouchListener(this);
 
         this.start = view.findViewById(R.id.btnStart);
+
         start.setOnClickListener(this);
+        this.ivCanvas1.setOnTouchListener(this);
+        this.ivCanvas2.setOnTouchListener(this);
+        this.ivCanvas3.setOnTouchListener(this);
+        this.ivCanvas4.setOnTouchListener(this);
 
         //textview score
         this.tvScore = view.findViewById(R.id.score);
+        this.tvLife = view.findViewById(R.id.tv_life);
         this.score=0;
 
         this.pointF =pointF;
 
         //jumlah nyawa
-        this.life = 1;
-
-        //Gesture Detector
-        this.gestureDetector = new GestureDetector(getContext(),this);
-
-        //Threads
-        this.threadHandler = new ThreadHandler(this);
-        this.threadHandler2 = new ThreadHandler(this);
-        this.threadHandler3 = new ThreadHandler(this);
-        this.threadHandler4 = new ThreadHandler(this);
-
-        this.movingTileThread = new MovingTileThread(this.threadHandler,this,1);
-        this.movingTileThread2 = new MovingTileThread(this.threadHandler2,this,2);
-        this.movingTileThread3 = new MovingTileThread(this.threadHandler3,this,3);
-        this.movingTileThread4 = new MovingTileThread(this.threadHandler4,this,4);
-
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-
-        this.accelerometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        this.magnetometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
+        this.life = 3;
+        this.tvLife.setText(Integer.toString(this.life));
         return view;
     }
 
@@ -127,21 +113,59 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         return fragment;
     }
 
+    public void createThreads(){
+
+        //Menentukan kolom
+            Random random = new Random();
+            int randCol = random.nextInt(5 - 1) + 1;
+
+            Tile tileEnd = new Tile(0, getScreenHeight(), getScreenWidth(), getScreenHeight() / 4, randCol);
+            Tile tileStart = new Tile(0, 0, getScreenWidth() / 4, getScreenHeight() / 4, randCol);
+
+            this.threadList.addFirst(new TileThread(this.tileHandler, tileEnd, tileStart, randCol));
+            this.threadList.getFirst().start();
+
+    }
+
     @Override
     public void onClick(View v) {
-        if ( v == start){
 
+        if ( v == start){
             initiateCanvas();
 
-            //Memulai Thread
-            movingTileThread.startThread();
-            movingTileThread2.startThread();
-            movingTileThread3.startThread();
-            movingTileThread4.startThread();
-
+            this.threadStarter.startThread();
 
             this.start.setVisibility(View.GONE);
+
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int nomorKolom;
+        switch(v.getId()) {
+            case 2131230910:
+               nomorKolom = 1;
+                break;
+            case 2131230911:
+               nomorKolom = 2;
+                break;
+            case 2131230912:
+               nomorKolom = 3;
+                break;
+            case 2131230913:
+               nomorKolom = 4;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
+        }
+
+        Tile touchedTile = new Tile(0, event.getY(), getScreenWidth()/4, event.getY(), nomorKolom);
+        for(int i = 0; i<this.threadList.size();i++){
+            this.threadList.get(i).checkTouched(touchedTile);
+        }
+
+        return true;
     }
 
     public void initiateCanvas(){
@@ -164,7 +188,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         this.mCanvas3 = new Canvas(mBitmap3);
         this.mCanvas4 = new Canvas(mBitmap4);
 
-        int mColorBackground = ResourcesCompat.getColor(getResources(), R.color.teal_200, null);
+        this.mColorBackground = ResourcesCompat.getColor(getResources(), R.color.teal_200, null);
         paint = new Paint();
         paint.setColor(mColorBackground);
 
@@ -196,109 +220,59 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     //untuk tambah score
     public void addScore(){
         this.score += 1;
-        this.tvScore.setText("Score"+Integer.toString(this.score));
+        Log.d("skor", "addScore: "+this.score);
+        this.tvScore.setText(Integer.toString(this.score));
     }
 
-    public void minLife(){
-        this.life -=1;
+    public void removeLife() {
+        this.life--;
+        if (life >= 0) {
+            this.tvLife.setText(Integer.toString(this.life));
+        }else{
+            this.threadStarter.terminate();
+
+            for(int i=0;i<this.threadList.size();i++){
+                this.threadList.get(i).stopThread();
+                this.threadList.remove(i);
+            }
+            if(this.threadList.isEmpty()){
+                this.listener.changePage(3);
+            }
+
+        }
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        PointF tap = new PointF();
-
-        return this.gestureDetector.onTouchEvent(event);
+    public void setWhiteCirlce(Tile tile) {
+        cekKolom(tile.getCol());
+        this.kolom.drawRect(tile.getLeft(), tile.getTop(), tile.getRight()/4, tile.getBottom(), paint);// tile.gettop
+        this.iv.invalidate();
     }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        Log.d("gesture", "onDown: onDown");
-        return true;
+    public void setRect(Tile tile) {
+        cekKolom(tile.getCol());
+        this.kolom.drawRect(tile.getLeft(), tile.getTop(), tile.getRight()/4, tile.getBottom(), notePaint);// tile.gettop
+        this.iv.invalidate();
+
     }
 
-    @Override
-    public void onShowPress(MotionEvent e) {
-            Log.d("gesture", "onDown: onShowPress");
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        Log.d("gesture", "onDown: onSingleTapUp");
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.d("gesture", "onDown: on_scroll");
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        Log.d("gesture", "onDown: onLongPress");
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.d("gesture", "onDown: on_fling");
-        return false;
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        int sensorType = event.sensor.getType();
-        switch (sensorType){
-            case Sensor.TYPE_ACCELEROMETER:
-                this.accelerometerReading = event.values.clone();
+    public void cekKolom(int kolom){
+        switch(kolom) {
+            case 1:
+                this.kolom = mCanvas1;
+                this.iv = ivCanvas1;
                 break;
-            case Sensor.TYPE_MAGNETIC_FIELD:
-                this.magnetometerReading = event.values.clone();
+            case 2:
+                this.kolom = mCanvas2;
+                this.iv = ivCanvas2;
                 break;
-        }
-        if(magnetometerReading != null && accelerometerReading != null) {
-            final float[] rotationMatrix = new float[9];
-            mSensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
-
-            final float[] orientationAngles = new float[3];
-            mSensorManager.getOrientation(rotationMatrix, orientationAngles);
-
-            float azimuth = orientationAngles[0];
-            float pitch = orientationAngles[1];
-            float roll = orientationAngles[2];
-
-            if (Math.abs(azimuth) < VALUE_DRIFT) {
-                azimuth = 0;
-            }
-
-            if (Math.abs(pitch) < VALUE_DRIFT) {
-                pitch = 0;
-            }
-
-            if (Math.abs(roll) < VALUE_DRIFT) {
-                roll = 0;
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mSensorManager.unregisterListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if ( accelerometer != null){
-            mSensorManager.registerListener(this,accelerometer,mSensorManager.SENSOR_DELAY_NORMAL);
-        }
-        if ( magnetometer != null){
-            mSensorManager.registerListener(this,magnetometer,mSensorManager.SENSOR_DELAY_NORMAL);
+            case 3:
+                this.kolom = mCanvas3;
+                this.iv = ivCanvas3;
+                break;
+            case 4:
+                this.kolom = mCanvas4;
+                this.iv = ivCanvas4;
+                break;
         }
     }
 }

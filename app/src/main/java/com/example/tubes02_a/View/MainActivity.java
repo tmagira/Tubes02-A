@@ -12,8 +12,8 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
 
     private MainMenuFragment mainMenuFragment;
     private GameFragment gameFragment;
-    private GameOverFragment gameOverFragment;
     private FragmentManager fragmentManager;
+    private GameOverFragment gameOverFragment;
     private FragmentTransaction ft;
     int score;
 //caca ubah ini
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
             ft.replace(R.id.fragment_container, this.mainMenuFragment);
         }else if (page == 2) {
             ft.replace(R.id.fragment_container, this.gameFragment).addToBackStack(null);
-        }else if ( page == 3){
+        }else if (page == 3) {
             ft.replace(R.id.fragment_container, this.gameOverFragment).addToBackStack(null);
         }
         this.ft.commit();
