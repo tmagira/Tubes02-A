@@ -31,8 +31,16 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.tubes02_a.R;
 
+<<<<<<< Updated upstream
 public class GameFragment extends Fragment implements GestureDetector.OnGestureListener, View.OnTouchListener, View.OnClickListener, SensorEventListener {
 
+=======
+import java.util.LinkedList;
+import java.util.Random;
+
+public class GameFragment extends Fragment implements View.OnTouchListener, View.OnClickListener{
+    //test
+>>>>>>> Stashed changes
     private FragmentListener listener;
 
     Bitmap mBitmap1, mBitmap2, mBitmap3, mBitmap4;
