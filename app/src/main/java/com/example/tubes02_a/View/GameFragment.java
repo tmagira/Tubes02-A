@@ -338,9 +338,9 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
             if (Math.abs(roll) < VALUE_DRIFT) {
                 roll = 0;
             }
-            if ( azimuth >= 0 ){
-                this.score += 1;
-            }
+//            if ( azimuth >= 0 ){
+//                this.score += 1;
+//            }
         }
     }
 
