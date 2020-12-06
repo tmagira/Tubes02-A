@@ -12,6 +12,7 @@ public class TileThread extends Thread{
     protected boolean isStopped = false;
     protected boolean isClicked = false;
     protected int randCol;
+    int scoreaa;
 
 
     public TileThread(TileHandler tileHandler, Tile tileEnd, Tile tileStart, int col){
@@ -23,6 +24,8 @@ public class TileThread extends Thread{
         this.rightStart = tileStart.getRight();
         this.topStart = tileStart.getTop();
         this.botStart = tileStart.getBottom();
+
+        this.scoreaa=0;
 
         //Set Koordinat Akhir
         this.tileEnd = tileEnd;
@@ -68,6 +71,7 @@ public class TileThread extends Thread{
                 this.isClicked = true;
                 tileHandler.removeTile(new Tile(this.tileStart.getLeft(), this.tileStart.getTop(), this.tileStart.getRight(), this.tileStart.getBottom(), this.tileStart.getCol()));
                 tileHandler.addScore();
+                scoreaa++;
             }
         }
     }

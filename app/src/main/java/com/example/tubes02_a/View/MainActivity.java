@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.tubes02_a.R;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
     private GameFragment gameFragment;
     private FragmentManager fragmentManager;
     private GameOverFragment gameOverFragment;
+    private SettingFragment settingFragment;
     private FragmentTransaction ft;
     int score;
 //caca ubah ini
@@ -27,7 +29,10 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
         this.mainMenuFragment = MainMenuFragment.newInstance();
         this.gameFragment = GameFragment.newInstance();
         this.gameOverFragment = GameOverFragment.newInstance();
+        this.settingFragment =SettingFragment.newInstance();
         this.score=0;
+
+
         // hapus test
         changePage(1);
     }
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
             ft.replace(R.id.fragment_container, this.gameFragment).addToBackStack(null);
         }else if (page == 3) {
             ft.replace(R.id.fragment_container, this.gameOverFragment).addToBackStack(null);
+        }else if (page == 4) {
+            ft.replace(R.id.fragment_container, this.settingFragment).addToBackStack(null);
         }
         this.ft.commit();
     }

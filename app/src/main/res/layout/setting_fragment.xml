@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/pengaturan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Setting"></TextView>
+
+    <TextView
+        android:id="@+id/setlife"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pengaturan"
+        android:text="Set Life : "></TextView>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setlife"
+        android:id="@+id/rg_life"
+        >
+
+        <RadioButton
+            android:id="@+id/radio_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="1" />
+
+        <RadioButton
+            android:id="@+id/radio_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setlife"
+            android:checked="true"
+            android:layout_toRightOf="@id/radio_1"
+            android:onClick="onRadioButtonClicked"
+            android:text="3" />
+
+        <RadioButton
+            android:id="@+id/radio_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setlife"
+            android:layout_toRightOf="@id/radio_3"
+            android:onClick="onRadioButtonClicked"
+            android:text="5" />
+    </RadioGroup>
+
+</RelativeLayout>

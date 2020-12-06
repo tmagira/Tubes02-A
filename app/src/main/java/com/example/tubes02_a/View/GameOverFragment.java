@@ -1,6 +1,7 @@
 package com.example.tubes02_a.View;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,9 +31,15 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         this.btnMainMenu = view.findViewById(R.id.bt_mainmenu);
         this.tvHighScore = view.findViewById(R.id.score);
         this.tvScore = view.findViewById(R.id.tv_score);
-        this.gameFragment = new GameFragment();
-        int scoreAngka = gameFragment.getScore();
-        tvScore.setText("Score : " + scoreAngka);
+        this.gameFragment = GameFragment.newInstance();
+
+        //dapet score dari gamefragment
+     //  Bundle b = this.getArguments();
+    //   int s = b.getInt("SCORE");
+       int scoreAngka = getActivity().getIntent().getIntExtra("SCORE",gameFragment.scorexx);
+        tvScore.setText("Score : " + (scoreAngka));
+
+
 //        //this.score = getIntent().getIntExtra("SCORE", 0);
 //        //Listeners
 //        tvScore.setText("Score:" + score);

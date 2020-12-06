@@ -1,6 +1,7 @@
 package com.example.tubes02_a.View;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -35,7 +36,7 @@ import com.example.tubes02_a.R;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class GameFragment extends Fragment implements View.OnTouchListener, View.OnClickListener{
+public class GameFragment extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
     private FragmentListener listener;
 
@@ -55,15 +56,16 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     private int score;
     private int life;
     private PointF pointF;
-
+    int scorexx=0;
     private TextView tvScore, tvLife;
 
-    public GameFragment(){}
+    public GameFragment() {
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.game_fragment,container, false);
+        View view = inflater.inflate(R.layout.game_fragment, container, false);
 
         this.score = 0;
         this.threadList = new LinkedList<>();
@@ -87,9 +89,14 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         //textview score
         this.tvScore = view.findViewById(R.id.score);
         this.tvLife = view.findViewById(R.id.tv_life);
-        this.score=0;
 
-        this.pointF =pointF;
+        //bundle
+      /*  GameFragment fragment = new GameFragment();
+        Bundle args = getActivity().getIntent().getExtras();
+        args.putInt("SCORE",score);
+        fragment.setArguments(args);*/
+
+        this.pointF = pointF;
 
         //jumlah nyawa
         this.life = 3;
@@ -99,38 +106,38 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentListener){
+        if (context instanceof FragmentListener) {
             this.listener = (FragmentListener) context;
-        }else{
-            throw new ClassCastException(context.toString()+ " Must Implement Fragment Listener");
+        } else {
+            throw new ClassCastException(context.toString() + " Must Implement Fragment Listener");
         }
     }
 
-    public static GameFragment newInstance(){
+    public static GameFragment newInstance() {
         GameFragment fragment = new GameFragment();
         return fragment;
     }
 
-    public void createThreads(){
+    public void createThreads() {
 
         //Menentukan kolom
-            Random random = new Random();
-            int randCol = random.nextInt(5 - 1) + 1;
+        Random random = new Random();
+        int randCol = random.nextInt(5 - 1) + 1;
 
-            Tile tileEnd = new Tile(0, getScreenHeight(), getScreenWidth(), getScreenHeight() / 4, randCol);
-            Tile tileStart = new Tile(0, 0, getScreenWidth() , getScreenHeight() / 4, randCol);
+        Tile tileEnd = new Tile(0, getScreenHeight(), getScreenWidth(), getScreenHeight() / 4, randCol);
+        Tile tileStart = new Tile(0, 0, getScreenWidth(), getScreenHeight() / 4, randCol);
 
-            this.threadList.addFirst(new TileThread(this.tileHandler, tileEnd, tileStart, randCol));
-            this.threadList.getFirst().start();
+        this.threadList.addFirst(new TileThread(this.tileHandler, tileEnd, tileStart, randCol));
+        this.threadList.getFirst().start();
 
     }
 
     @Override
     public void onClick(View v) {
 
-        if ( v == start){
+        if (v == start) {
             initiateCanvas();
 
             this.threadStarter.startThread();
@@ -143,40 +150,44 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int nomorKolom;
-        switch(v.getId()) {
+        switch (v.getId()) {
             case 2131230910:
-               nomorKolom = 1;
+                nomorKolom = 1;
                 break;
             case 2131230911:
-               nomorKolom = 2;
+                nomorKolom = 2;
                 break;
             case 2131230912:
-               nomorKolom = 3;
+                nomorKolom = 3;
                 break;
             case 2131230913:
-               nomorKolom = 4;
+                nomorKolom = 4;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
 
-        Tile touchedTile = new Tile(0, event.getY(), getScreenWidth()/4, event.getY(), nomorKolom);
-        for(int i = 0; i<this.threadList.size();i++){
+        Tile touchedTile = new Tile(0, event.getY(), getScreenWidth() / 4, event.getY(), nomorKolom);
+        for (int i = 0; i < this.threadList.size(); i++) {
             this.threadList.get(i).checkTouched(touchedTile);
+            scorexx++;
         }
 
         return true;
     }
+    public int getScore(){
+        return this.scorexx;
+    }
 
-    public void initiateCanvas(){
-       int screenWidth = getScreenWidth();
-       int screenHeight = getScreenHeight();
+    public void initiateCanvas() {
+        int screenWidth = getScreenWidth();
+        int screenHeight = getScreenHeight();
 
         //Create BitMap
-        this.mBitmap1 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
-        this.mBitmap2 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
-        this.mBitmap3 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
-        this.mBitmap4 = Bitmap.createBitmap(screenWidth/4, screenHeight,Bitmap.Config.ARGB_8888);
+        this.mBitmap1 = Bitmap.createBitmap(screenWidth / 4, screenHeight, Bitmap.Config.ARGB_8888);
+        this.mBitmap2 = Bitmap.createBitmap(screenWidth / 4, screenHeight, Bitmap.Config.ARGB_8888);
+        this.mBitmap3 = Bitmap.createBitmap(screenWidth / 4, screenHeight, Bitmap.Config.ARGB_8888);
+        this.mBitmap4 = Bitmap.createBitmap(screenWidth / 4, screenHeight, Bitmap.Config.ARGB_8888);
 
         this.ivCanvas1.setImageBitmap(mBitmap1);
         this.ivCanvas2.setImageBitmap(mBitmap2);
@@ -209,37 +220,39 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         this.ivCanvas4.invalidate();
     }
 
-    public  int getScreenWidth() {
+    public int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
-    public  int getScreenHeight() {
+    public int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     //untuk tambah score
-    public void addScore(){
+    public void addScore() {
         this.score += 1;
-        Log.d("skor", "addScore: "+this.score);
+        Log.d("skor", "addScore: " + this.score);
         this.tvScore.setText(Integer.toString(this.score));
     }
 
-    public int getScore(){
-        return this.score;
-    }
+
+
+    // public void setLife(int life){
+    //    this.life =life;
+    //}
 
     public void removeLife() {
         this.life--;
-        if (life >0) {
+        if (life > 0) {
             this.tvLife.setText(Integer.toString(this.life));
-        }else{
+        } else {
             this.threadStarter.terminate();
 
-            for(int i=0;i<this.threadList.size();i++){
+            for (int i = 0; i < this.threadList.size(); i++) {
                 this.threadList.get(i).stopThread();
                 this.threadList.remove(i);
             }
-            if(this.threadList.isEmpty()){
+            if (this.threadList.isEmpty()) {
                 this.listener.changePage(3);
             }
 
@@ -248,19 +261,19 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
 
     public void setWhiteCirlce(Tile tile) {
         cekKolom(tile.getCol());
-        this.kolom.drawRect(tile.getLeft(), tile.getTop(), tile.getRight()/4, tile.getBottom(), paint);// tile.gettop
+        this.kolom.drawRect(tile.getLeft(), tile.getTop(), tile.getRight() / 4, tile.getBottom(), paint);// tile.gettop
         this.iv.invalidate();
     }
 
     public void setRect(Tile tile) {
         cekKolom(tile.getCol());
-        this.kolom.drawRect(tile.getLeft(), tile.getTop(), tile.getRight()/4, tile.getBottom(), notePaint);// tile.gettop
+        this.kolom.drawRect(tile.getLeft(), tile.getTop(), tile.getRight() / 4, tile.getBottom(), notePaint);// tile.gettop
         this.iv.invalidate();
 
     }
 
-    public void cekKolom(int kolom){
-        switch(kolom) {
+    public void cekKolom(int kolom) {
+        switch (kolom) {
             case 1:
                 this.kolom = mCanvas1;
                 this.iv = ivCanvas1;
