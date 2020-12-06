@@ -20,6 +20,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     private FragmentListener listener;
     int score;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.game_over_fragment, container, false);
 
