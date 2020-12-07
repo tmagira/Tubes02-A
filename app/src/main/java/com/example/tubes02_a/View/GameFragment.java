@@ -57,6 +57,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     private int life;
     private PointF pointF;
     private TextView tvScore, tvLife;
+    int scoreSent;
 
     public GameFragment() {
     }
@@ -227,15 +228,9 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
     //untuk tambah score
     public void addScore() {
         this.score += 1;
-        Log.d("skor", "addScore: " + this.score);
         this.tvScore.setText(Integer.toString(this.score));
     }
 
-
-
-    // public void setLife(int life){
-    //    this.life =life;
-    //}
 
     public void removeLife() {
         this.life--;
@@ -249,7 +244,12 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
                 this.threadList.remove(i);
             }
             if (this.threadList.isEmpty()) {
-                this.listener.changePage(3);
+                this.scoreSent++;
+
+                if(scoreSent == 1){
+                    this.listener.receiveMassage(String.valueOf(this.score));
+                }
+
             }
 
         }

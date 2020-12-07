@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.tubes02_a.R;
 
@@ -17,7 +18,8 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
     private GameOverFragment gameOverFragment;
     private SettingFragment settingFragment;
     private FragmentTransaction ft;
-    int score;
+    private int score;
+
 //caca ubah ini
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,4 +59,13 @@ public class MainActivity extends AppCompatActivity implements FragmentListener{
     public void closeApplication() {
 
     }
+
+    @Override
+    public void receiveMassage(String mssg) {
+        Log.d("taheta", "receiveMassage: " +mssg);
+        this.gameOverFragment.setScore(mssg);
+        changePage(3);
+    }
+
+
 }

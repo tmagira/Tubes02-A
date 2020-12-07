@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,12 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        this.tvScore.setText(Integer.toString(this.score));
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof FragmentListener) {
@@ -85,6 +92,11 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
             listener.changePage(2);
 
         }
+    }
+
+    public void setScore(String mssg) {
+        this.score = Integer.parseInt(mssg);
+
     }
 }
 
