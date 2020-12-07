@@ -47,8 +47,8 @@ public class TileThread extends Thread{
                 if(!this.isClicked){
                     tileHandler.removeTile(new Tile(this.tileStart.getLeft(), this.tileStart.getTop(), this.tileStart.getRight(), this.tileStart.bottom, randCol));
                 }
-                this.tileStart.setTop(this.tileStart.getTop() + 50);
-                this.tileStart.setBottom(this.tileStart.getBottom() + 50);
+                this.tileStart.setTop(this.tileStart.getTop() + 20);
+                this.tileStart.setBottom(this.tileStart.getBottom() + 20);
                 if(!this.isClicked){
                     tileHandler.addTile(new Tile(this.tileStart.getLeft(), this.tileStart.getTop(), this.tileStart.getRight(), this.tileStart.bottom, randCol));
                 }
