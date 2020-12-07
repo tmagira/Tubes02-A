@@ -47,18 +47,18 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
         this.btnPlayAgain.setOnClickListener(this);
         this.btnMainMenu.setOnClickListener(this);
 //
-//        //highscore
-//        //SharedPreferences sharedPreferences = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-//        int highScore = sharedPreferences.getInt("HIGH_SCORE", 0);
-//        if (score > highScore) {
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putInt("HIGH_SCORE", score);
-//            editor.apply();
-//
-//            tvHighScore.setText("Highs Score" + score);
-//        } else {
-//            tvHighScore.setText("Highs Score" + highScore);
-//        }
+        //highscore
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        int highScore = sharedPreferences.getInt("HIGH_SCORE", 0);
+        if (this.score > highScore) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("HIGH_SCORE", this.score);
+            editor.apply();
+
+            tvHighScore.setText("Highs Score : " + this.score);
+        } else {
+            tvHighScore.setText("Highs Score : " + highScore);
+        }
 
         return view;
     }
@@ -66,7 +66,7 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        this.tvScore.setText(Integer.toString(this.score));
+        this.tvScore.setText("Your Score : " + Integer.toString(this.score));
     }
 
     @Override
