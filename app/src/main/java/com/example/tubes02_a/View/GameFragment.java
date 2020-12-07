@@ -9,6 +9,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,9 +40,17 @@ import com.example.tubes02_a.R;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class GameFragment extends Fragment implements View.OnTouchListener, View.OnClickListener {
+public class GameFragment extends Fragment implements View.OnTouchListener, View.OnClickListener, SensorEventListener {
 
     private FragmentListener listener;
+    SensorManager mSensorManager;
+    Sensor accelerometer;
+    Sensor magnetometer;
+
+    float[] accelerometerReading;
+    float[] magnetometerReading;
+    float VALUE_DRIFT = 0.05f;
+    float azimuth, pitch, roll;
 
     private Bitmap mBitmap1, mBitmap2, mBitmap3, mBitmap4;
     protected ImageView ivCanvas1, ivCanvas2, ivCanvas3, ivCanvas4, iv;
@@ -101,6 +113,11 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         //jumlah nyawa
         this.life = 3;
         this.tvLife.setText(Integer.toString(this.life));
+
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+
+        this.accelerometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        this.magnetometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         return view;
     }
 
@@ -251,7 +268,6 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
                 }
 
             }
-
         }
     }
 
@@ -286,6 +302,67 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
                 this.kolom = mCanvas4;
                 this.iv = ivCanvas4;
                 break;
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        int sensorType = event.sensor.getType();
+        switch (sensorType){
+            case Sensor.TYPE_ACCELEROMETER:
+                this.accelerometerReading = event.values.clone();
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                this.magnetometerReading = event.values.clone();
+                break;
+        }
+        if(magnetometerReading != null && accelerometerReading != null) {
+            final float[] rotationMatrix = new float[9];
+            mSensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
+
+            final float[] orientationAngles = new float[3];
+            mSensorManager.getOrientation(rotationMatrix, orientationAngles);
+
+            azimuth = orientationAngles[0];
+            pitch = orientationAngles[1];
+            roll = orientationAngles[2];
+
+            if (Math.abs(azimuth) < VALUE_DRIFT) {
+                azimuth = 0;
+            }
+
+            if (Math.abs(pitch) < VALUE_DRIFT) {
+                pitch = 0;
+            }
+
+            if (Math.abs(roll) < VALUE_DRIFT) {
+                roll = 0;
+            }
+//            if ( azimuth >= 0 ){
+//                this.score += 1;
+//            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ( accelerometer != null){
+            mSensorManager.registerListener(this,accelerometer,mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if ( magnetometer != null){
+            mSensorManager.registerListener(this,magnetometer,mSensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 }
