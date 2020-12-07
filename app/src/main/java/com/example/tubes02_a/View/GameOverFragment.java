@@ -55,9 +55,9 @@ public class GameOverFragment extends Fragment implements View.OnClickListener {
             editor.putInt("HIGH_SCORE", this.score);
             editor.apply();
 
-            tvHighScore.setText("Highs Score : " + this.score);
+            tvHighScore.setText("High Score : " + this.score);
         } else {
-            tvHighScore.setText("Highs Score : " + highScore);
+            tvHighScore.setText("High Score : " + highScore);
         }
 
         return view;
