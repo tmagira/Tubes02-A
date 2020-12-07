@@ -254,6 +254,7 @@ public class GameFragment extends Fragment implements View.OnTouchListener, View
         if (life > 0) {
             this.scoreSent = 0;
             this.tvLife.setText(Integer.toString(this.life));
+            this.scoreSent =0;
         } else {
             this.threadStarter.terminate();
 
